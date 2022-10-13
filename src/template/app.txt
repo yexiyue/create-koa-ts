@@ -1,0 +1,23 @@
+import { router } from './router/index';
+import koaBody from "koa-body";
+import Koa from 'koa'
+import koaCors from "koa-cors";
+import KoaStatic from 'koa-static'
+import {resolve} from 'path'
+const app=new Koa()
+
+app.use(koaCors())
+app.use(koaBody({
+    multipart:true,
+    formidable:{
+        uploadDir:resolve(__dirname,'../public'),
+        keepExtensions:true,
+    }
+}))
+app.use(KoaStatic(resolve(__dirname,'../public')))
+app.use(router.routes())
+
+
+app.listen(3000,()=>{
+    console.log('server is running at http://localhost:3000')
+})
